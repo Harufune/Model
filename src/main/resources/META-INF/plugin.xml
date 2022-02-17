@@ -1,0 +1,29 @@
+<idea-plugin>
+    <id>org.example.Model</id>
+    <name>Plugin display name here</name>
+    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+
+    <description><![CDATA[
+    Enter short description for your plugin here.<br>
+    <em>most HTML tags may be used</em>
+    ]]></description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <fileType name="Model File " implementationClass="ModelEditor.ModelFileType" fieldName="INSTANCE"
+                  language="Model" extensions="Model"/>
+
+        <lang.parserDefinition language="Model" implementationClass="ModelEditor.ModelParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="Model"
+                                       implementationClass="ModelEditor.ModelSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="ModelEditor.ModelColorSettingsPage"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>

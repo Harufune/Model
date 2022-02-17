@@ -1,0 +1,74 @@
+{
+  parserClass="parser.ModelParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Model"
+  psiImplClassSuffix="Impl"
+  psiPackage="language.psi"
+  psiImplPackage="psi.impl"
+
+  elementTypeHolderClass="psi.ModelTypes"
+  elementTypeClass="psi.ModelElementType"
+  tokenTypeClass="psi.ModelTokenType"
+}
+
+modelFile ::= channel*
+
+private channel ::= (channel1 CRLF*)|COMMENT|CRLF
+
+channel1 ::= (CHANNEL CHANNEL_NAME LBRACE equation*  RBRACE)
+
+equation ::= ((REF state_transition)|((IN|OUT)lhs EQUALS rhs)) CRLF
+
+lhs ::= state_transition
+rhs ::= term
+
+state_transition ::=SYMBOL  LBRACKET args1
+
+term ::= (SYMBOL LBRACKET args1 OPterm)|(SYMBOL OPterm)
+                                       |(LBRACKET SYMBOL LBRACKET args1 OPterm2 OPterm)
+                                       |(LBRACKET SYMBOL LBRACKET args1 OPterm2)
+                                       |(LBRACKET SYMBOL OPterm2 OPterm)
+                                       |(LBRACKET SYMBOL OPterm2)
+                                       |(SYMBOL LBRACKET args1 )
+                                       |(OPERATOR SYMBOL LBRACKET args1)
+                                       |(OPERATOR SYMBOL)
+                                       |(SYMBOL)
+
+
+args1 ::= arg1 | (arg2 args1)
+arg1 ::= term1
+arg2 ::= term2
+
+
+OPterm ::= (OPERATOR SYMBOL LBRACKET args1 OPterm)|(OPERATOR SYMBOL OPterm )
+                                                  |(OPERATOR SYMBOL LBRACKET args1)
+                                                  |(OPERATOR SYMBOL )
+
+OPterm2 ::= (OPERATOR SYMBOL LBRACKET args1 OPterm RBRACKET)|(OPERATOR SYMBOL OPterm RBRACKET)
+                                                            |(OPERATOR SYMBOL LBRACKET args1 RBRACKET)
+                                                            |(OPERATOR SYMBOL RBRACKET)
+
+
+term1 ::= (SYMBOL RBRACKET)|(SYMBOL LBRACKET args1 RBRACKET )
+                           |(SYMBOL OPterm RBRACKET)
+                           |(SYMBOL LBRACKET args1 OPterm RBRACKET)
+                           |(LBRACKET SYMBOL LBRACKET args1 OPterm2 OPterm RBRACKET)
+                           |(LBRACKET SYMBOL LBRACKET args1 OPterm2 RBRACKET)
+                           |(LBRACKET SYMBOL OPterm2 OPterm RBRACKET)
+                           |(LBRACKET SYMBOL OPterm2 RBRACKET)
+                           |(OPERATOR SYMBOL RBRACKET)
+                           |(OPERATOR SYMBOL LBRACKET args1 RBRACKET)
+
+term2 ::= (SYMBOL COMMA CRLF?)|(SYMBOL LBRACKET args1 COMMA CRLF?)
+                              |(SYMBOL OPterm COMMA)
+                              |(SYMBOL LBRACKET args1 OPterm COMMA)
+                              |(LBRACKET SYMBOL LBRACKET args1 OPterm2 OPterm COMMA)
+                              |(LBRACKET SYMBOL LBRACKET args1 OPterm2 COMMA)
+                              |(LBRACKET SYMBOL OPterm2 OPterm COMMA)
+                              |(LBRACKET SYMBOL OPterm2 COMMA)
+                              |(OPERATOR SYMBOL COMMA)
+                              |(OPERATOR SYMBOL LBRACKET args1 COMMA)
+
+
